@@ -30,7 +30,7 @@ emotion_model.add(Flatten())
 emotion_model.add(Dense(1024, activation='relu'))
 emotion_model.add(Dropout(0.5))
 emotion_model.add(Dense(7, activation='softmax'))
-emotion_model.load_weights('model.h5')
+emotion_model.load_weights('model1.h5')
 
 cv2.ocl.setUseOpenCL(False)
 
@@ -52,20 +52,11 @@ global last_frame1
 last_frame1 = np.zeros((480, 640, 3), dtype=np.uint8)
 global cap1
 show_text=[0]
-#global frame_number
-
 
 def show_subject():
     cap1 = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if not cap1.isOpened():
         print("Cannot open the camera")
-
-    #global frame_number
-    # length = int(cap1.get(cv2.CAP_PROP_FRAME_COUNT))
-    # frame_number += 1
-    # if frame_number >= length:
-    #     exit()
-    # cap1.set(1, frame_number)
 
     flag1, frame1 = cap1.read()
     frame1 = cv2.resize(frame1, (300, 300))
@@ -81,8 +72,6 @@ def show_subject():
         prediction = emotion_model.predict(cropped_img)
 
         maxindex = int(np.argmax(prediction))
-        # cv2.putText(frame1, emotion_dict[maxindex], (x + 20, y - 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
-        #             cv2.LINE_AA)
         show_text[0] = maxindex
     if flag1 is None:
         print("Major error!")
@@ -132,15 +121,7 @@ def my_exception_hook(exctype, value, traceback):
 sys.excepthook = my_exception_hook
 
 if __name__ == '__main__':
-    #frame_number = 0
     root=tk.Tk()
-    # img = ImageTk.PhotoImage(Image.open("done.jpg"))
-    # heading = Label(root, image=img, bg='black')
-    #
-    # heading.pack()
-    # heading2 = Label(root, text="Photo to Emoji", pady=20, font=('arial', 45, 'bold'), bg='black', fg='#CDCDCD')
-    #
-    # heading2.pack()
     lmain = tk.Label(master=root, padx=50, bd=10)
     lmain2 = tk.Label(master=root, bd=10)
 
@@ -158,8 +139,6 @@ if __name__ == '__main__':
     exitbutton = Button(root, text='Quit', fg="red", command=root.destroy, font=('arial', 25, 'bold')).pack(side = BOTTOM)
     threading.Thread(target = show_subject).start()
     threading.Thread(target = show_avatar).start()
-    # show_subject()
-    # show_avatar()
     root.mainloop()
-
-
+    
+    
