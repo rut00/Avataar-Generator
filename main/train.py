@@ -52,8 +52,8 @@ emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, 
 emotion_model_info = emotion_model.fit(
         train_generator,
         steps_per_epoch=28709 // 64,
-        epochs=25,
+        epochs=75,
         validation_data=validation_generator,
         validation_steps=7178 // 64)
 
-emotion_model.save_weights('model.h5')
+emotion_model.save_weights('model1.h5')
